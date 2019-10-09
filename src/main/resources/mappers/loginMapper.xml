@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.inhatc.mapper.loginMapper">
+	<select id="login_check" resultType="com.inhatc.board.domain.LoginVO">
+                select mem_no,count(*) as count from member
+                where mem_id=#{id} and mem_pw=#{pw}
+        </select>
+</mapper>

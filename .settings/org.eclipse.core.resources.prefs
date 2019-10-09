@@ -1,0 +1,8 @@
+eclipse.preferences.version=1
+encoding//src/main/java/com/inhatc/board/controller/CodeCommentController.java=UTF-8
+encoding//src/main/java/com/inhatc/board/controller/CodeController.java=UTF-8
+encoding//src/main/java/com/inhatc/board/controller/QnaCommentController.java=UTF-8
+encoding//src/main/java/com/inhatc/board/controller/QnaController.java=UTF-8
+encoding//src/main/java/com/inhatc/board/domain/CodePager.java=UTF-8
+encoding//src/main/java/com/inhatc/board/qna/domain/QnaPager.java=UTF-8
+encoding//src/main/webapp/resources/style.css=UTF-8

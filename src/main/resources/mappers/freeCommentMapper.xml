@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.inhatc.mapper.freeCommentMapper">
+        <select id="commentSearch" resultType="com.inhatc.board.free.domain.FreeBoardCommentVO">
+		select * from free_board_comment
+		join member on member.mem_no = free_board_comment.mem_no
+		where fb_no = #{fb_no}
+		order by fbc_no
+	</select>
+	
+	<insert id="commentInsert">
+		insert into free_board_comment(fb_no, mem_no, fbc_text)
+		values(#{fb_no}, #{mem_no}, #{fbc_text})
+	</insert>
+	
+	<update id="commentUpdate">
+		update free_board_comment
+		set fbc_text = #{fbc_text}
+		where fbc_no = #{fbc_no}
+	</update>
+	
+	<delete id="commentDelete">
+		delete from free_board_comment
+		where fbc_no = #{fbc_no}
+	</delete>
+	
+	<select id="commentCount" resultType="java.lang.Integer">
+		select count(*)
+		from free_board_comment
+		where fb_no = #{fb_no}
+	</select>
+</mapper>

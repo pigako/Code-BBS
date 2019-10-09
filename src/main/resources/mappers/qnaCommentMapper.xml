@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.inhatc.mapper.qnaCommentMapper">
+        <select id="comment_count" resultType="java.lang.Integer">
+                select count(*) from qna_board_comment
+                where qb_no=#{qb_no}
+        </select>
+        <select id="comment_search" resultType="com.inhatc.board.qna.domain.QnaCommentVO">
+                select * from qna_board_comment natural join member
+                where qb_no=#{qb_no}
+        </select>
+		<insert id="comment_insert">
+                insert into qna_board_comment(qb_no,mem_no,qbc_text)
+                values(#{qb_no},#{mem_no},#{qbc_text})
+		</insert>
+        <update id="comment_update">
+                update qna_board_comment
+                set
+                qbc_text=#{qbc_text}
+                where qbc_no=#{qbc_no}
+        </update>
+        <delete id="comment_delete">
+                delete from qna_board_comment
+                where qbc_no=#{qbc_no}
+        </delete>
+</mapper>

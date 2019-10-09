@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.inhatc.mapper.freeBoardMapper">
+	<select id="listAll" resultType="com.inhatc.board.free.domain.FreeBoardVO">
+		select * from free_board
+		join member on member.mem_no = free_board.mem_no
+		order by fb_no desc
+	</select>
+	<select id="read" resultType="com.inhatc.board.free.domain.FreeBoardVO">
+		select * from free_board
+		join member on member.mem_no = free_board.mem_no
+		where fb_no = #{fb_no}
+	</select>
+	<update id="addHit">
+		update free_board
+		set fb_view = fb_view + 1
+		where fb_no = #{fb_no}
+	</update>
+	
+	<delete id="deleteBoard">
+		delete from free_board
+		where fb_no = #{fb_no}
+	</delete>
+	
+	<update id="updateBoard">
+		update free_board
+		set fb_title = #{fb_title},
+		fb_text = #{fb_text},
+		fb_type = #{fb_type}
+		where fb_no = #{fb_no}
+	</update>
+	
+	<insert id="writeBoard">
+		insert into free_board(mem_no, fb_title, fb_text, fb_type)
+		values (#{mem_no}, #{fb_title}, #{fb_text}, #{fb_type})
+	</insert>
+	
+	<select id="getCount" resultType="java.lang.Integer">
+		select count(*) from free_board
+		where fb_type != "공지"
+	</select>
+	
+	<select id="selectPage" resultType="com.inhatc.board.free.domain.FreeBoardVO">
+		select * from free_board
+		where fb_type != "공지"
+		order by fb_no desc
+		limit #{start}, #{end}
+	</select>
+	
+	<select id="search" resultType="com.inhatc.board.free.domain.FreeBoardVO">
+		select * from free_board
+		join member on member.mem_no = free_board.mem_no
+		<where>
+			fb_type != "공지"
+			<if test="searchType != null">
+				<if test="search != null">
+					<if test="searchType eq 'writer'">
+						and mem_id like CONCAT('%', #{search}, '%')
+					</if>
+					<if test="searchType eq 'title'">
+						and fb_title like CONCAT('%', #{search}, '%')
+					</if>
+				</if>
+			</if>
+		</where>
+		order by fb_no desc
+		limit #{start}, #{end}
+	</select>
+	
+	<select id="getSearchBoardCount" resultType="java.lang.Integer">
+		select count(*)
+		from free_board
+		join member on member.mem_no = free_board.mem_no
+		<where>
+			fb_type != "공지"
+			<if test="searchType != null">
+				<if test="search != null">
+					<if test="searchType eq 'writer'">
+						and mem_id like CONCAT('%',#{search},'%')
+					</if>
+					<if test="searchType eq 'title'">
+						and fb_title like CONCAT('%',#{search},'%')
+					</if>
+				</if>
+			</if>
+		</where>
+	</select>
+	
+	<select id="searchNotice" resultType="com.inhatc.board.free.domain.FreeBoardVO">
+		select * from free_board
+		where fb_type = "공지"
+		order by fb_no desc
+	</select>
+	
+	<select id="getBoardNo" resultType="java.lang.Integer">
+		select max(fb_no) from free_board
+		where mem_no = #{mem_no}
+	</select>
+</mapper>

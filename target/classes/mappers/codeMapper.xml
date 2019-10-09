@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.inhatc.mapper.codeMapper">
+        <select id="allselect" resultType="com.inhatc.board.domain.CodeVO">
+                select * from code_board
+                order by cb_no desc
+        </select>
+        <select id="read" resultType="com.inhatc.board.domain.CodeVO">
+                select * from code_board natural join member
+                where cb_no=#{cb_no}
+        </select>
+        <update id="view_hit">
+                update code_board
+                set
+                cb_view=cb_view+1
+                where cb_no=#{cb_no}
+        </update>
+        <delete id="delete_code">
+                delete from code_board
+                where cb_no=#{cb_no}
+        </delete>
+        <update id="update_code">
+                update code_board
+                set
+                cb_title=#{cb_title},
+                cb_text=#{cb_text},
+                cb_lang=#{cb_lang}
+                where cb_no=#{cb_no}
+        </update>
+        <insert id="write_code">
+                insert into code_board(mem_no,cb_title,cb_text,cb_lang)
+                values(#{mem_no},#{cb_title},#{cb_text},#{cb_lang})
+        </insert>
+        <select id="get_count" resultType="java.lang.Integer">
+                select count(*) from code_board
+        </select>
+        <select id="get_lang" resultType="com.inhatc.board.domain.CodeVO">
+                select distinct cb_lang from code_board
+        </select>
+        <select id="select_page" resultType="com.inhatc.board.domain.CodeVO">
+                select * from code_board natural join member
+                order by cb_no desc
+                limit #{start},{end}
+        </select>
+        <select id="search_code" resultType="com.inhatc.board.domain.CodeVO">
+                select *
+                from code_board natural join member
+                <where>
+                        <choose>
+				<when test="language !='none'">
+					<if test="language !=null">
+						cb_lang = #{language}
+					</if>
+					<if test="type != null">
+						<if test="search != null">
+							<if test="type eq 'id'">
+								and mem_id like CONCAT('%',#{search},'%')
+							</if>
+							<if test="type eq 'title'">
+								and cb_title like CONCAT('%',#{search},'%')
+							</if>
+						</if>
+					</if>
+				</when>
+				<when test="language =='none'">
+					<if test="type != null">
+						<if test="search != null">
+							<if test="type eq 'id'">
+								mem_id like CONCAT('%',#{search},'%')
+							</if>
+							<if test="type eq 'title'">
+								cb_title like CONCAT('%',#{search},'%')
+							</if>
+						</if>
+					</if>
+				</when>
+			</choose>
+                </where>
+                order by cb_no desc
+                limit #{start},#{end}
+        </select>
+        <select id="search_code_count" resultType="java.lang.Integer">
+                select count(*)
+                from code_board natural join member
+                <where>
+                        <choose>
+				<when test="language !='none'">
+					<if test="language !=null">
+						cb_lang = #{language}
+					</if>
+					<if test="type != null">
+						<if test="search != null">
+							<if test="type eq 'id'">
+								and mem_id like CONCAT('%',#{search},'%')
+							</if>
+							<if test="type eq 'title'">
+								and cb_title like CONCAT('%',#{search},'%')
+							</if>
+						</if>
+					</if>
+				</when>
+				<when test="language =='none'">
+					<if test="type != null">
+						<if test="search != null">
+							<if test="type eq 'id'">
+								mem_id like CONCAT('%',#{search},'%')
+							</if>
+							<if test="type eq 'title'">
+								cb_title like CONCAT('%',#{search},'%')
+							</if>
+						</if>
+					</if>
+				</when>
+			</choose>
+                </where>
+        </select>
+</mapper>

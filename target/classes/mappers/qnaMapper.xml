@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.inhatc.mapper.qnaMapper">
+        <select id="allselect" resultType="com.inhatc.board.qna.domain.QnaVO">
+                select * from qna_board
+                order by qb_no desc
+        </select>
+        <select id="read" resultType="com.inhatc.board.qna.domain.QnaVO">
+                select * from qna_board natural join member
+                where qb_no=#{qb_no}
+        </select>
+        <update id="view_hit">
+                update qna_board
+                set
+                qb_view=qb_view+1
+                where qb_no=#{qb_no}
+        </update>
+        <delete id="delete_qna">
+                delete from qna_board
+                where qb_no=#{qb_no}
+        </delete>
+        <update id="update_qna">
+                update qna_board
+                set
+                qb_title=#{qb_title},
+                qb_text=#{qb_text}
+                where qb_no=#{qb_no}
+        </update>
+        <insert id="write_qna">
+                insert into qna_board(mem_no,qb_title,qb_text)
+                values(#{mem_no},#{qb_title},#{qb_text})
+        </insert>
+        <select id="get_count" resultType="java.lang.Integer">
+                select count(*) from qna_board
+        </select>
+        <select id="get_lang" resultType="com.inhatc.board.qna.domain.QnaVO">
+                select distinct cb_lang from qna_board
+        </select>
+        <select id="select_page" resultType="com.inhatc.board.qna.domain.QnaVO">
+                select * from qna_board natural join member
+                order by qb_no desc
+                limit #{start},{end}
+        </select>
+        <select id="search_qna" resultType="com.inhatc.board.qna.domain.QnaVO">
+                select *
+                from qna_board natural join member
+                <where>
+                        <if test="type != null">
+                                <if test="search != null">
+                                        <if test="type eq 'id'">
+                                                and mem_id like CONCAT('%',#{search},'%')
+                                        </if>
+                                        <if test="type eq 'title'">
+                                                and qb_title like CONCAT('%',#{search},'%')
+                                        </if>
+                                </if>
+                        </if>
+                </where>
+                order by qb_no desc
+                limit #{start},#{end}
+        </select>
+        <select id="search_qna_count" resultType="java.lang.Integer">
+                select count(*)
+                from qna_board natural join member
+                <where>
+                        <if test="type != null">
+                                <if test="search != null">
+                                        <if test="type eq 'id'">
+                                                and mem_id like CONCAT('%',#{search},'%')
+                                        </if>
+                                        <if test="type eq 'title'">
+                                                and qb_title like CONCAT('%',#{search},'%')
+                                        </if>
+                                </if>
+                        </if>
+                </where>
+        </select>
+</mapper>

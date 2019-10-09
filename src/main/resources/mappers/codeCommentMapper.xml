@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.inhatc.mapper.codeCommentMapper">
+        <select id="comment_count" resultType="java.lang.Integer">
+                select count(*) from code_board_comment
+                where cb_no=#{cb_no}
+        </select>
+        <select id="comment_search" resultType="com.inhatc.board.domain.CodeCommentVO">
+                select * from code_board_comment natural join member
+                where cb_no=#{cb_no}
+        </select>
+		<insert id="comment_insert">
+                insert into code_board_comment(cb_no,mem_no,cc_text)
+                values(#{cb_no},#{mem_no},#{cc_text})
+		</insert>
+        <update id="comment_update">
+                update code_board_comment
+                set
+                cc_text=#{cc_text}
+                where cbc_no=#{cbc_no}
+        </update>
+        <delete id="comment_delete">
+                delete from code_board_comment
+                where cbc_no=#{cbc_no}
+        </delete>
+</mapper>

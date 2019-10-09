@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.inhatc.mapper.freeFileMapper">
+	<insert id = "registration">
+		insert into fb_file(fb_no, ff_file_name, ff_origin_file_name)
+		values (#{fb_no}, #{ff_file_name}, #{ff_origin_file_name})
+	</insert>
+	
+	<select id="getFileList" resultType="com.inhatc.board.free.domain.FreeFileVO">
+		select * from fb_file
+		where fb_no = #{fb_no}
+	</select>
+</mapper>
